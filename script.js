@@ -9,15 +9,10 @@ function playRound(humanChoice, computerChoice) {
   };
   userScore += mechanism[humanChoice][computerChoice];
   computerScore += mechanism[computerChoice][humanChoice];
-  console.log("Human choice : ", humanChoice);
-  console.log("Computer choice : ", computerChoice);
-  console.log("Human Score : ", userScore);
-  console.log("Computer Score : ", computerScore);
 }
 
-function getHumanChoice() {
-  const userChoice = prompt("Type 1 for rock, 2 for paper and 3 for scissor. Choose only one");
-  const validChoice = parseInt(userChoice);
+function getHumanChoice(rawChoice) {
+  const validChoice = parseInt(rawChoice);
   switch (validChoice) {
     case 1:
       return "rock";
@@ -36,27 +31,72 @@ function getComputerChoice() {
   else return "scissor";
 }
 
-function playGame() {
-  playRound(getHumanChoice(), getComputerChoice());
-  playRound(getHumanChoice(), getComputerChoice());
-  playRound(getHumanChoice(), getComputerChoice());
-  playRound(getHumanChoice(), getComputerChoice());
-  playRound(getHumanChoice(), getComputerChoice());
+const controls = document.getElementById("controls");
+const controlButtons = Array.from(controls.querySelectorAll("button"));
 
-  if (userScore > computerScore) {
-    console.log("Yayy you have won!");
-  } else if (userScore < computerScore) {
-    console.log("Oh no you have failed");
-  } else {
-    console.log(" is a draw!!!");
+const playerScoreShow = document.getElementById("player-score");
+const playerChoiceShow = document.getElementById("player-choice");
+
+const computerScoreShow = document.getElementById("computer-score");
+const computerChoiceShow = document.getElementById("computer-choice");
+
+const winnerModal = document.getElementById("game-over-modal");
+const winnerShow = document.getElementById("final-winner-text");
+const resetBtn = document.getElementById("reset-btn");
+
+controls.addEventListener("click", (event) => {
+  const button = event.target.closest(".btn-choice");
+  if (!button) return;
+
+  controlButtons.forEach((btn) => {
+    btn.disabled = true;
+  });
+
+  const choice = button.dataset.choice;
+  const userChoice = getHumanChoice(choice);
+  const computerChoice = getComputerChoice();
+
+  const iconMap = {
+    rock: "🪨",
+    paper: "📄",
+    scissor: "✂️",
+  };
+  playerChoiceShow.textContent = iconMap[userChoice];
+  computerChoiceShow.textContent = iconMap[computerChoice];
+
+  playRound(userChoice, computerChoice);
+  playerScoreShow.textContent = userScore;
+  computerScoreShow.textContent = computerScore;
+
+  if (userScore === 5 || computerScore === 5) {
+    winnerModal.classList.remove("hidden");
+    if (userScore === 5) {
+      winnerShow.textContent = "🎉 You won the game!";
+    }
+    if (computerScore === 5) {
+      winnerShow.textContent = ":( Computer has won the game!";
+    }
+    return;
   }
-  console.log("Final Score Human : ", userScore);
-  console.log("Final Score Computer : ", computerScore);
-}
 
-const confirmed = confirm("The game will begin after this, are you ready ?");
-if (confirmed) {
-  playGame();
-} else {
-  console.log("player declined");
-}
+  setTimeout(() => {
+    controlButtons.forEach((btn) => {
+      btn.disabled = false;
+    });
+  }, 100);
+});
+
+resetBtn.addEventListener("click", () => {
+  userScore = 0;
+  computerScore = 0;
+  playerScoreShow.textContent = userScore;
+  computerScoreShow.textContent = computerScore;
+  playerChoiceShow.textContent = "❓";
+  computerChoiceShow.textContent = "❓";
+
+  controlButtons.forEach((btn) => {
+    btn.disabled = false;
+  });
+
+  winnerModal.classList.add("hidden");
+});

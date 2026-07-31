@@ -4,8 +4,75 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Odin Rock Paper Scissors</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <main class="game-container">
+      <header class="game-header">
+        <h1>Rock Paper Scissors</h1>
+        <p class="subtitle">First to 5 points wins the match!</p>
+      </header>
+
+      <!-- Scoreboard -->
+      <section class="scoreboard">
+        <div class="score-card">
+          <span class="player-label">Player</span>
+          <span id="player-score" class="score">0</span>
+        </div>
+        <div class="score-divider">:</div>
+        <div class="score-card">
+          <span class="player-label">Computer</span>
+          <span id="computer-score" class="score">0</span>
+        </div>
+      </section>
+
+      <!-- Action / Result Display -->
+      <section class="arena">
+        <div class="choices-display">
+          <div class="choice-box">
+            <span class="choice-owner">You Picked</span>
+            <span id="player-choice" class="choice-icon">❓</span>
+          </div>
+          <div class="vs-badge">VS</div>
+          <div class="choice-box">
+            <span class="choice-owner">Computer Picked</span>
+            <span id="computer-choice" class="choice-icon">❓</span>
+          </div>
+        </div>
+
+        <!-- Round status text -->
+        <p id="round-message" class="round-message">Choose your move to start the game!</p>
+      </section>
+
+      <!-- Player Controls -->
+      <section class="controls" id="controls">
+        <button class="btn-choice" data-choice="1" aria-label="Rock">
+          <span class="btn-icon">🪨</span>
+          <span class="btn-label">Rock</span>
+        </button>
+        <button class="btn-choice" data-choice="2" aria-label="Paper">
+          <span class="btn-icon">📄</span>
+          <span class="btn-label">Paper</span>
+        </button>
+        <button class="btn-choice" data-choice="3" aria-label="Scissors">
+          <span class="btn-icon">✂️</span>
+          <span class="btn-label">Scissors</span>
+        </button>
+      </section>
+
+      <!-- Final Winner Announcement & Reset -->
+      <div id="game-over-modal" class="game-over hidden">
+        <h2 id="final-winner-text">🎉 You Won the Game!</h2>
+        <button id="reset-btn" class="reset-btn">Play Again</button>
+      </div>
+    </main>
+
     <script type="module" src="./script.js"></script>
   </body>
 </html>
